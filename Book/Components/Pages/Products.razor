@@ -1,10 +1,14 @@
 ﻿@page "/products"
 @using Book.Services
+@using Book.Services
+@using Book.Services
 @inject IBookService BookService
+@inject CartService CartService
+@inject NavigationManager NavManager
 
 <h3>لیست کتاب‌ها</h3>
 
-@if (books == null || books.Count == 0)
+@if (BookService.GetBooks().Count == 0)
 {
     <p>کتابی موجود نیست.</p>
 }
@@ -20,7 +24,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in books)
+            @foreach (var book in BookService.GetBooks())
             {
                 <tr>
                     <td>@book.Title</td>
@@ -36,19 +40,13 @@ else
 }
 
 @code {
-    private List<Book> books;
-    private List<Book> cart = new();
-
-    protected override void OnInitialized()
-    {
-        books = BookService.GetBooks();
-    }
-
     void AddToCart(Book book)
     {
-        cart.Add(book);
-        // برای نمایش ساده پیام
-        Console.WriteLine($"کتاب {book.Title} به سبد خرید اضافه شد");
+        CartService.AddToCart(book);
+        StateHasChanged();
+        // Optional: هدایت به صفحه Cart بعد از افزودن
+        // NavManager.NavigateTo("/cart");
     }
 }
+
 

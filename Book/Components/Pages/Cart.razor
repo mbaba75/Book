@@ -1,0 +1,54 @@
+﻿@page "/cart"
+@using Book.Services
+
+@inject CartService CartService
+
+<h3>سبد خرید شما</h3>
+
+@if (CartService.GetCartBooks().Count == 0)
+{
+    <p>سبد خرید شما خالی است.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>نویسنده</th>
+                <th>قیمت (تومان)</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in CartService.GetCartBooks())
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Price</td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => RemoveFromCart(book)">حذف</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>مجموع قیمت: @CartService.GetTotalPrice() تومان</h4>
+    <button class="btn btn-success" @onclick="Checkout">تکمیل خرید</button>
+}
+
+@code {
+    void RemoveFromCart(Book book)
+    {
+        CartService.RemoveFromCart(book);
+    }
+
+    void Checkout()
+    {
+        CartService.ClearCart();
+        Console.WriteLine("خرید تکمیل شد!");
+    }
+}
+
