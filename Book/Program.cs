@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
 
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IBookService, BookService>();
 
 
 var app = builder.Build();

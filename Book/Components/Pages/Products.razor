@@ -1,0 +1,54 @@
+﻿@page "/products"
+@using Book.Services
+@inject IBookService BookService
+
+<h3>لیست کتاب‌ها</h3>
+
+@if (books == null || books.Count == 0)
+{
+    <p>کتابی موجود نیست.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>نویسنده</th>
+                <th>قیمت (تومان)</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Price</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => AddToCart(book)">افزودن به سبد خرید</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Book> books;
+    private List<Book> cart = new();
+
+    protected override void OnInitialized()
+    {
+        books = BookService.GetBooks();
+    }
+
+    void AddToCart(Book book)
+    {
+        cart.Add(book);
+        // برای نمایش ساده پیام
+        Console.WriteLine($"کتاب {book.Title} به سبد خرید اضافه شد");
+    }
+}
+
