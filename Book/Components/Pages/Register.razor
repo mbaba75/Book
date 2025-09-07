@@ -1,0 +1,30 @@
+﻿@page "/register"
+<h3>ثبت‌نام</h3>
+
+<EditForm Model="@model" OnValidSubmit="HandleValidSubmit" FormName="frmRegister">
+    <InputText @bind-Value="model.UserName" placeholder="نام کاربری" />
+    <InputText @bind-Value="model.Password" type="password" placeholder="رمز عبور" />
+    <button type="submit">ثبت‌نام</button>
+</EditForm>
+
+@if (message != null)
+{
+    <p>@message</p>
+}
+
+@code {
+    RegisterModel model = new();
+    string message;
+
+    void HandleValidSubmit()
+    {
+        message = $"ثبت‌نام برای {model.UserName} انجام شد";
+    }
+
+    class RegisterModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+}
+
