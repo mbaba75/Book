@@ -1,0 +1,41 @@
+﻿@page "/login"
+@using Book.Services
+@inject IAuthService AuthService
+
+<h3>ورود</h3>
+
+<EditForm Model="@model" OnValidSubmit="HandleValidSubmit" FormName="frmLogin">
+    <InputText @bind-Value="model.UserName" placeholder="نام کاربری" />
+    <InputText @bind-Value="model.Password" type="password" placeholder="رمز عبور" />
+    <button type="submit">ورود</button>
+</EditForm>
+
+@if (message != null)
+{
+    <p>@message</p>
+}
+
+@code {
+    LoginModel model = new();
+    string message;
+
+    void HandleValidSubmit()
+    {
+        var user = AuthService.Login(model.UserName, model.Password);
+        if (user != null)
+        {
+            message = $"خوش آمدید، {user.UserName}!";
+        }
+        else
+        {
+            message = "نام کاربری یا رمز عبور اشتباه است.";
+        }
+    }
+
+    class LoginModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+}
+
