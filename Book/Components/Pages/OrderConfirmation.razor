@@ -1,0 +1,34 @@
+﻿@page "/order-confirmation"
+@inject NavigationManager NavigationManager
+
+<h3>تأیید سفارش</h3>
+
+@if (!string.IsNullOrEmpty(customerName))
+{
+    <div class="alert alert-success">
+        سپاس از خرید شما، <strong>@customerName</strong> 🎉
+        سفارش شما با موفقیت ثبت شد.
+    </div>
+}
+else
+{
+    <p>سفارش شما ثبت شد.</p>
+}
+
+<button class="btn btn-primary" @onclick="GoToProducts">بازگشت به فروشگاه</button>
+
+@code {
+    private string? customerName;
+
+    protected override void OnInitialized()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        customerName = query["name"];
+    }
+
+    void GoToProducts()
+    {
+        NavigationManager.NavigateTo("/products");
+    }
+}
