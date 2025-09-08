@@ -1,0 +1,54 @@
+﻿@page "/user-profile"
+@inject Book.Services.UserService UserService
+
+<h3>پروفایل کاربر</h3>
+
+@{
+    var user = UserService.GetUser();
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">@user.FullName</h5>
+        <p><strong>ایمیل:</strong> @user.Email</p>
+        <p><strong>آدرس:</strong> @user.Address</p>
+    </div>
+</div>
+
+<h4>سفارش‌های من</h4>
+
+@if (user.Orders.Count == 0)
+{
+    <p>شما هنوز سفارشی ثبت نکرده‌اید.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>شماره سفارش</th>
+                <th>تاریخ</th>
+                <th>مبلغ کل</th>
+                <th>کتاب‌ها</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in user.Orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.Date.ToShortDateString()</td>
+                    <td>@order.TotalPrice تومان</td>
+                    <td>
+                        <ul>
+                            @foreach (var book in order.Books)
+                            {
+                                <li>@book.Title - @book.Price تومان</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

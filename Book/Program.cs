@@ -11,7 +11,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IBookService, BookService>();
 builder.Services.AddSingleton<CartService>();
-
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 
